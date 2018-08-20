@@ -1,0 +1,4 @@
+AppBundle\Entity\Member:
+  properies:
+    firstName:
+      

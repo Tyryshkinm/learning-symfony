@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a href="member/create">New Member</a>
+    <br />
+    {% for member in members %}
+        {{ member.firstName }}
+        {{ member.lastName }}
+        {{ member.email }}
+        <a href="member/{{ member.id }}/edit">edit</a>
+        <br />
+    {% endfor %}
+{% endblock %}

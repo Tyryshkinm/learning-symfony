@@ -1,0 +1,19 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+hello_index:
+    path:     /hello
+    defaults: { _controller: AppBundle:Hello:index }
+
+member_index:
+    path:     /member
+    defaults: { _controller: AppBundle:Member:index }
+
+member_create:
+    path:     /member/create
+    defaults: { _controller: AppBundle:Member:create }
+
+member_update:
+    path:     /member/{memberId}/edit
+    defaults: { _controller: AppBundle:Member:create }
