@@ -1,13 +1,33 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <a href="member/create">New Member</a>
+
+    <div class="count">
+        Total pages:
+        {{ pagination.getTotalItemCount }}
+    </div>
+
+    Search:
+    <br /><br />
+    <form action="" method="GET" novalidate>
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
     <br />
-    {% for member in members %}
+    <a href="member/create">New Member</a>
+    <br /><br />
+    List of members:
+    <br /><br />
+    {% for member in pagination %}
         {{ member.firstName }}
         {{ member.lastName }}
         {{ member.email }}
         <a href="member/{{ member.id }}/edit">edit</a>
+        <a href="member/{{ member.id }}/delete">delete</a>
         <br />
     {% endfor %}
+    <br />
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,6 +43,21 @@ class Member
      */
     private $email;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Department", inversedBy="members")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     */
+    private $department;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Phone", mappedBy="member", cascade={"persist"})
+     */
+    protected $phones;
+
+    public function __construct()
+    {
+        $this->phones = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -123,5 +139,64 @@ class Member
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set department
+     *
+     * @param \AppBundle\Entity\Department $department
+     *
+     * @return Member
+     */
+    public function setDepartment(\AppBundle\Entity\Department $department = null)
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    /**
+     * Get department
+     *
+     * @return \AppBundle\Entity\Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * Add phone
+     *
+     * @param \AppBundle\Entity\Phone $phone
+     *
+     * @return Member
+     */
+    public function addPhone(\AppBundle\Entity\Phone $phone)
+    {
+        $phone->setMember($this);
+        $this->phones[] = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Remove phone
+     *
+     * @param \AppBundle\Entity\Phone $phone
+     */
+    public function removePhone(\AppBundle\Entity\Phone $phone)
+    {
+        $this->phones->removeElement($phone);
+    }
+
+    /**
+     * Get phones
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPhones()
+    {
+        return $this->phones;
     }
 }

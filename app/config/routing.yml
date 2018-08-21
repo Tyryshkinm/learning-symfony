@@ -17,3 +17,7 @@ member_create:
 member_update:
     path:     /member/{memberId}/edit
     defaults: { _controller: AppBundle:Member:create }
+
+member_delete:
+    path:     /member/{memberId}/delete
+    defaults: { _controller: AppBundle:Member:destroy }

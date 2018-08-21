@@ -2,6 +2,60 @@
 
 {% block body %}
     <form action="" method="POST" novalidate>
-        {{ form_widget(form) }}
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.department) }}
+        <ul class="phones" data-prototype="{{ form_widget(form.phones.vars.prototype)|e('html_attr') }}">
+            {{ form_widget(form.phones) }}
+        </ul>
+
+        {{ form_rest(form) }}
     {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+    var $collectionHolder;
+    var $addPhoneButton = $('<button type="button" class="add_phone_link">Add a phone</button>');
+    var $newLinkLi = $('<li></li>').append($addPhoneButton);
+
+    jQuery(document).ready(function() {
+        $collectionHolder = $('ul.phones');
+
+        $collectionHolder.find('div[id*="member_phones_"]').each(function() {
+        addPhoneFormDeleteLink($(this));
+        });
+
+        $collectionHolder.append($newLinkLi);
+        $collectionHolder.data('index', $collectionHolder.find(':input').length);
+        $addPhoneButton.on('click', function(e) {
+            addPhoneForm($collectionHolder, $newLinkLi);
+        });
+    });
+
+    function addPhoneForm($collectionHolder, $newLinkLi) {
+        var prototype = $collectionHolder.data('prototype');
+        var index = $collectionHolder.data('index');
+        var newForm = prototype;
+        newForm = newForm.replace(/__name__/g, index);
+        $collectionHolder.data('index', index + 1);
+        var $newFormLi = $('<li></li>').append(newForm);
+        $newLinkLi.before($newFormLi);
+
+        addPhoneFormDeleteLink($newFormLi);
+    }
+
+    function addPhoneFormDeleteLink($phoneFormLi) {
+        var $removeFormButton = $('<button type="button">Delete this phone</button>');
+        $phoneFormLi.append($removeFormButton);
+
+        $removeFormButton.on('click', function(e) {
+            $phoneFormLi.remove();
+        });
+    }
+
+    </script>
 {% endblock %}

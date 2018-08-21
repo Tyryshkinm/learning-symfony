@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Member;
+
 /**
  * MemberRepository
  *
@@ -10,4 +12,25 @@ namespace AppBundle\Repository;
  */
 class MemberRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param string $firstName
+     * @param string $lastName
+     * @param string $email
+     * @return Member[]
+     */
+    public function getMembersForSearch($firstName, $lastName, $email)
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.firstName LIKE :firstName')
+            ->andWhere('m.lastName LIKE :lastName')
+            ->andWhere('m.email LIKE :email')
+            ->setParameters([
+                'firstName' => '%' . $firstName . '%',
+                'lastName' => '%' . $lastName . '%',
+                'email' => '%' . $email . '%',
+                ])
+            ->getQuery()
+            ->getResult();
+    }
+
 }

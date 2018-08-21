@@ -1,4 +1,12 @@
 AppBundle\Entity\Member:
-  properies:
+  properties:
     firstName:
-      
+    - NotBlank: ~
+    lastName:
+    - NotBlank: ~
+    email:
+    - NotBlank: ~
+    - Email:
+        message: The email "{{ value }}" is not a valid email.
+  constraints:
+  - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
